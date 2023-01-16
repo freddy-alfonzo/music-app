@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { Error, Loader, SongCard } from "../components";
@@ -14,20 +14,26 @@ const AroundYou = () => {
   useEffect(() => {
     axios
       .get(
-        "https://geo.ipify.org/api/v2/country?apiKey=at_brO7OUknAgcMkKuSu0vnWyRzrdN7h"
+        "https://geo.ipify.org/api/v2/country?apiKey=at_V16j7pRaPkkpbhTu7ZVeMwL5c1ycJ"
       )
       .then((res) => setCountry(res?.data?.location?.country))
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
   }, [country]);
 
+  const aroundRef = useRef(null);
+  
+  useEffect(() => {
+    setTimeout(()=>aroundRef.current.scrollIntoView({ behavior: 'smooth' }),1000);
+  });
+
   if (isFetching && loading)
     return <Loader tittle="Loading songs around you" />;
   if (error && country) return <Error />;
-  if (error)
+  if (error) 
     return (
-      <div className="w-full flex justify-center items-center">
-        <h1 className="font-bold text-2xl text-white mt-2 text-center">
+      <div  className="w-full flex justify-center items-center">
+        <h1 ref={aroundRef} className="font-bold text-2xl text-white mt-2 text-center">
           Failed to fetch with Api, disable ADBlock and try again.
         </h1>
       </div>
@@ -35,7 +41,7 @@ const AroundYou = () => {
 
   return (
     <div className="flex flex-col">
-      <h2 className="font-bold text-3xl text-white text-left mt-4 mb-10">
+      <h2 ref={aroundRef} className="font-bold text-3xl text-white text-left mt-4 mb-10">
         {" "}
         Around You <span className="font-black">({country})</span>
       </h2>

@@ -3,6 +3,7 @@ import { Error, Loader, SongCard } from "../components";
 import { genres } from "../assets/constants";
 import { selectGenreListId } from "../redux/features/playerSlice";
 import { useGetSongsByGenreQuery } from "../redux/services/shazamCore";
+import { useEffect, useRef } from "react";
 
 const Discover = () => {
   const dispatch = useDispatch();
@@ -14,12 +15,19 @@ const Discover = () => {
   );
   const genreTitle = genres.find(({ value }) => value === genreListId)?.title;
 
+  const discoverRef = useRef(null)
+
+  useEffect(() => {
+    setTimeout(()=>discoverRef.current.scrollIntoView({ behavior: 'smooth' }),1000);
+  });
+
+
   if (isFetching) return <Loader tittle="Loading songs..." />;
   if (error) return <Error />;
 
   return (
     <div className="flex flex-col">
-      <div className="w-full flex justify-between items-center flex-col  my-5 mb-10">
+      <div ref={discoverRef} className="w-full flex justify-between items-center flex-col  my-5 mb-10">
         <div className="flex flex-row">
           <h2 className="font-bold text-3xl text-white mx-3 my-3">
              Discover {genreTitle}

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { FiSearch } from "react-icons/fi";
 
@@ -11,7 +11,10 @@ const Searchbar = () => {
 
     navigate(`/search/${searchTerm}`)
   }
-  
+
+  useEffect(() => {
+    setTimeout(()=> document.getElementById("search-field").focus(), 1500);
+  });
 
   return (
     <form onSubmit={handleSubmit}
@@ -24,6 +27,7 @@ const Searchbar = () => {
       <div className="flex flex-row justify-start items-center">
         <FiSearch className="w-5 h-5 ml-4" />
         <input
+          
           name="search-field"
           autoComplete="off"
           id="search-field"
